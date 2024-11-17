@@ -6,13 +6,14 @@ import { useForm } from "vee-validate";
 import { todosProps, useStore } from "../stores/todos";
 import { watch } from "vue";
 import { useToast } from "vue-toastification";
+import trim from "../handlers/trim";
 
 const { todos, addTodos } = useStore();
 const toast = useToast();
 
 const { handleSubmit, errors, defineField, resetForm } = useForm({
   validationSchema: yup.object({
-    text: yup.string().required("todo title is required!"),
+    text: yup.string().required("Todo Title is Required!"),
   }),
 });
 
@@ -21,7 +22,7 @@ const [text, textAttr] = defineField("text");
 const handleAddTodo = handleSubmit((values) => {
   const todosData: todosProps = {
     id: todos.length + 1,
-    text: values.text,
+    text: trim(values.text),
     complated: false,
   };
 
