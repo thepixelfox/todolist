@@ -3,7 +3,7 @@ import { useStore } from "../stores/todos";
 import EmptyBoxTodos from "./EmptyBoxTodos.vue";
 import TodoBox from "./TodoBox.vue";
 
-const { todos, removeTodo } = useStore();
+const { todos, removeTodo, editTodoChecked } = useStore();
 
 const handleRemoveTodo = (id: number | undefined) => {
   removeTodo(id);
@@ -20,6 +20,7 @@ const handleRemoveTodo = (id: number | undefined) => {
       :text="todo.text"
       :id="todo.id"
       v-model:model-value="todo.complated"
+      @update:model-value="(value) => editTodoChecked(todo.id, value)"
       @set-id="(id) => handleRemoveTodo(id)"
     />
   </div>
