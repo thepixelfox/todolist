@@ -34,6 +34,13 @@ export const useStore = defineStore("todos", {
       setCookie("todos", JSON.stringify(this.todos), 30);
       toast.success("Add Todo Successfully!");
     },
+    editTodoChecked(id: number, checked: boolean) {
+      const todo = this.todos.find((t) => t.id === id);
+      if (todo) {
+        todo.complated = checked;
+        setCookie("todos", JSON.stringify(this.todos), 30);
+      }
+    },
     removeTodo(id: number | undefined) {
       const toast = useToast();
 
@@ -50,6 +57,13 @@ export const useStore = defineStore("todos", {
       } else {
         toast.error("Todo Not Found!");
       }
+    },
+    sortTodos() {
+      this.todos.sort((a, b) => {
+        if (a.complated === b.complated) return 0;
+        return a.complated ? 1 : -1;
+      });
+      setCookie("todos", JSON.stringify(this.todos), 30);
     },
   },
 });
