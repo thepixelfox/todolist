@@ -4,12 +4,9 @@ import Button from "./Button.vue";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { todosProps, useStore } from "../stores/todos";
-import { watch } from "vue";
-import { useToast } from "vue-toastification";
 import trim from "../handlers/trim";
 
 const { todos, addTodos } = useStore();
-const toast = useToast();
 
 const { handleSubmit, errors, defineField, resetForm } = useForm({
   validationSchema: yup.object({
@@ -30,13 +27,6 @@ const handleAddTodo = handleSubmit((values) => {
 
   resetForm();
 });
-
-watch(errors, () => {
-  if (errors.value.text) {
-    const errorMessage = errors.value.text;
-    toast.error(errorMessage);
-  }
-});
 </script>
 
 <template>
@@ -46,12 +36,17 @@ watch(errors, () => {
     <div
       class="max-w-custom-container relative w-full h-full mx-auto flex-grow flex justify-center items-center px-4"
     >
-      <img src="/images/logo.png" alt="logo" width="150" class="!select-none" />
+      <img
+        src="/images/logo.png"
+        alt="logo"
+        width="150"
+        class="!select-none relative max-md:-top-5"
+      />
       <form
         class="absolute w-full -bottom-[1.75rem] max-sm:-bottom-[5.75rem] flex justify-center items-center gap-2 px-4 max-sm:flex-col"
         @submit="handleAddTodo"
       >
-        <Input v-model="text" v-bind="textAttr" />
+        <Input v-model="text" v-bind="textAttr" :errorMessage="errors.text" />
         <Button type="submit" />
       </form>
     </div>
